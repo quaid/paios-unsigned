@@ -23,20 +23,31 @@ export const App = () => {
       sort: { field: 'name', order: 'ASC' },
       filter: {}
     }).then(response => {
+      if (response.data.length === 0) {
+        console.log('No abilities found.');
+        return;
+      }
+  
       response.data.forEach(ability => {
-        console.log(`Generating dynamic admin component for ability: ${ability.id}`);
+        console.log(`Attempting to load admin component for ability: ${ability.id}`);
         const AbilityAdminComponent = React.lazy(() =>
-          import(`../abilities/${ability.id}/admin.tsx`)
-            .catch(() => ({ default: () => null }))
+          import(`Abilities/${ability.id}/admin`).then(module => ({
+            default: module[`${ability.id}AbilityDashboard`],
+          })).catch((error) => {
+            console.error(`Failed to load admin component for ability: ${ability.id}`, error);
+            return { default: () => <div>Error loading component for ability: {ability.id}</div> };
+          })
         );
-
+  
         setAbilityResources(prev => [
           ...prev,
-          <Suspense fallback={null} key={ability.id}>
+          <Suspense fallback={<div>Loading...</div>} key={ability.id}>
             <AbilityAdminComponent />
           </Suspense>
         ]);
       });
+    }).catch(error => {
+      console.error('Failed to fetch abilities:', error);
     });
   }, []);
 

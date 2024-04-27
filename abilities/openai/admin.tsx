@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card, CardContent, CardHeader } from '@mui/material';
 
-export const OpenAIAbilityDashboard = () => (
+export const openaiAbilityDashboard = () => (
   <Card>
     <CardHeader title="OpenAI Ability Dashboard" />
     <CardContent>
@@ -15,4 +15,4 @@ export const OpenAIAbilityDashboard = () => (
 );
 
 // Default export for lazy loading in App.tsx
-export default OpenAIAbilityDashboard;
+export default openaiAbilityDashboard;

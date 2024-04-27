@@ -30,3 +30,5 @@ export const AbilityShow = () => (
         </SimpleShowLayout>
     </Show>
 );
+
+
